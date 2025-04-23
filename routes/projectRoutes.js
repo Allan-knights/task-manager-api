@@ -5,6 +5,21 @@ const Project = require('../models/Project');
 const Task = require('../models/Task');
 
 // Create Project
+router.post('/', auth, async (req, res) => {
+  try {
+    const project = new Project({
+      name: req.body.name,
+      description: req.body.description,
+      createdBy: req.userId
+    });
+    
+    await project.save();
+    res.status(201).json(project);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // Create Task in Project
 router.post('/:projectId/tasks', auth, async (req, res) => {
   try {
